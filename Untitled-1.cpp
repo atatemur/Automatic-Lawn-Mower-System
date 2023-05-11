@@ -20,20 +20,20 @@ unsigned short rightDistance;
 
 void setup()
 {
-  pinMode(slideswitch, INPUT);
+    pinMode(slideswitch, INPUT);
   //Sonic sensor pins
-  pinMode(trig, OUTPUT);
-  pinMode(leftEcho,INPUT);
-  pinMode(rightEcho,INPUT);
-  pinMode(frontEcho,INPUT);
+    pinMode(trig, OUTPUT);
+    pinMode(leftEcho,INPUT);
+    pinMode(rightEcho,INPUT);
+    pinMode(frontEcho,INPUT);
   
   //Left motor pins
-  pinMode(motor1Forward, OUTPUT);
-  pinMode(motor1Backward, OUTPUT);
+    pinMode(motor1Forward, OUTPUT);
+    pinMode(motor1Backward, OUTPUT);
   
   //rightmotorPins
-  pinMode(motor2Forward, OUTPUT);
-  pinMode(motor2Backward, OUTPUT);
+    pinMode(motor2Forward, OUTPUT);
+    pinMode(motor2Backward, OUTPUT);
 
 }
 int mode = 0;
@@ -44,22 +44,35 @@ void loop()
   delay(10); // Delay a little bit to improve simulation performance
 }
 
+void CirclingMode()
+{
+    PingDistance();
+    if(frontDistance)
+    {
+
+    }
+
+}
 void PingDistance()
 {
   // Ensuring a clean HIGH pulse by starting with LOW.
   // The sensor initiates when a HIGH signal for about 10μs is given.
-  digitalWrite(TRIG, LOW);
-  delayMicroseconds(5);
-  digitalWrite(TRIG, HIGH);
-  delayMicroseconds(10);
-  digitalWrite(TRIG, LOW);
+    digitalWrite(TRIG, LOW);
+    delayMicroseconds(5);
+    digitalWrite(TRIG, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(TRIG, LOW);
   
   // Wait for the pin to become HIGH ( Recieve the pulse )
   // and starts timing.
-  frontduration = pulseIn(frontEcho, HIGH);
-  leftduration = pulseIn(leftEcho, HIGH);
-	rightduration = pulseIn(rightEcho,HIGH);
+    frontDuration = pulseIn(frontEcho, HIGH);
+    leftDuration = pulseIn(leftEcho, HIGH);
+    rightDuration = pulseIn(rightEcho,HIGH);
   
-  
+    frontDistance = (frontDuration/2) / 29.1; 
+    rightDistance = (rightDuration/2) / 29.1; 
+    leftDistance = (leftDuration/2) / 29.1; 
+
+
 }
 
