@@ -44,11 +44,22 @@ void loop()
   delay(10); // Delay a little bit to improve simulation performance
 }
 
-void CirclingMode()
+void BeginMowing()
 {
     PingDistance();
-    if(frontDistance)
+    if(rightDistance==0&&leftDistance==0))
     {
+      while(frontDistance>5)
+      {
+        digitalWrite(motor1Forward,HIGH);
+        digitalWrite(motor2Forward,HIGH);
+        PingDistance();
+      }
+        digitalWrite(motor1Forward,LOW);
+        digitalWrite(motor2Forward,LOW);
+    }else if(rightDistance==0&&frontDistance==0)
+    {
+      
 
     }
 
