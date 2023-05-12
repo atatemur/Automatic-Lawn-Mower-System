@@ -58,7 +58,6 @@ void setup()
   
     Serial.begin(9600);
 }
-int mode = 0;
 
 void loop()
 {
@@ -94,7 +93,7 @@ void loop()
       //checks if there are no obstacles in front of the machine
       //second part makes sure the machine doesn't stray too far away from the wall
       if(frontDistance > distancefromborder && leftDistance <= distancefromborder)
-      {}
+      {
       //if both checks are passed then the machine should begin moving
         BeginMowing();
       }
@@ -106,7 +105,6 @@ void loop()
         //but it is without doubt not perfect for every set up
         delay(500);
       }
-  	delay(10); //small delay to keep performance in simulation
   }
   else //if no longer moving the machine should stop doing things
   {
@@ -123,6 +121,7 @@ void ShutDown()
   turns=0;
   StopMoving();
 }
+
 
 void TurnRight()
 {
