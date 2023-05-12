@@ -32,6 +32,7 @@ unsigned short frontDistance;
 unsigned short leftDistance;
 unsigned int distancefromborder = 30;
 int turns = 0;
+int resets = 0;
 bool isSetUp = false;
 bool isRunning = true;
 
@@ -68,51 +69,73 @@ void loop()
   else isRunning = true;
   //check if job is finished/is out of range
   if(distancefromborder>=334) ShutDown();
+  //helps to not get machine stuck doing turns
+  if(resets>15) ShutDown();
 
   //check so that it doesn't run when it shouldn't
   if(isRunning)
   {
+    //some serial window lines used for debugging
+    //they are not necessary
     Serial.println("------------------");
-	Serial.println(frontDistance);
+	  Serial.println(frontDistance);
     Serial.println(distancefromborder);
-	Serial.println(turns);
+	  Serial.println(turns);
 
+      //checking to make sure if the machine has made a full circe
       if(turns>=3)
       {
+        //increase the distance so that it can start closing in on the middle
         distancefromborder+=20;
+        //initial value has to be 1 bigger as there is one less turn in the initial run
         turns=-1;
+        resets++;
       }
+      //checks if there are no obstacles in front of the machine
+      //second part makes sure the machine doesn't stray too far away from the wall
       if(frontDistance > distancefromborder && leftDistance <= distancefromborder)
-      {
+      {}
+      //if both checks are passed then the machine should begin moving
         BeginMowing();
       }
       else
       {
+        //once there is an obstacle in close vaccinity the machine should turn
         TurnRight();
+        //delay is dependant on size of the wheel, this is the most universal one,
+        //but it is without doubt not perfect for every set up
         delay(500);
       }
-  	delay(10);
+  	delay(10); //small delay to keep performance in simulation
   }
-  else
+  else //if no longer moving the machine should stop doing things
   {
     StopMoving();
   }
   delay(10); // Delay a little bit to improve simulation performance
 }
-
-void ShutDown()
+void ShutDown() 
 {
+//shuts down the entire machine
   isRunning=false;
+  distancefromborder = 20;
+  resets=0;
+  turns=0;
+  StopMoving();
 }
 
 void TurnRight()
 {
+  //machine should already be in movement if a turn is necessary
+  //if machine is already moving we only need to disable the right motor,
+  //because the left one will do the turn on its own
   digitalWrite(motor1Forward,LOW);
   turns++;
 }
 
 void StopMoving()
 {
+  //Stops ALL the motors
   digitalWrite(motor1Forward,LOW);
   digitalWrite(motor1Backward,LOW);
   digitalWrite(motor2Forward,LOW);
@@ -121,6 +144,7 @@ void StopMoving()
 }
 void BeginMowing()
 {
+  //Starts both motors forward
   digitalWrite(motor1Forward,HIGH);
   digitalWrite(motor1Backward,LOW);
   digitalWrite(motor2Forward,HIGH);
@@ -128,6 +152,9 @@ void BeginMowing()
 }
 void PingFrontDistance()
 {
+  //A method that calls on the front ultrasonic distance sensor to detect 
+  //the distance to  any nearby objects
+
   // Ensuring a clean HIGH pulse by starting with LOW.
   // The sensor initiates when a HIGH signal for about 10μs is given.
     digitalWrite(trig, LOW);
@@ -140,11 +167,15 @@ void PingFrontDistance()
   // and starts timing.
     frontDuration = pulseIn(frontEcho, HIGH);
 
+    //distance is calculated with a special formula dervied from the speed of sound
     frontDistance = (frontDuration/2) / 29.1; 
 }
 
 void PingLeftDistance()
 {
+  //A method that calls on the front ultrasonic distance sensor to detect 
+  //the distance to  any nearby objects
+
   // Ensuring a clean HIGH pulse by starting with LOW.
   // The sensor initiates when a HIGH signal for about 10μs is given.
     digitalWrite(trig, LOW);
@@ -157,6 +188,7 @@ void PingLeftDistance()
   // and starts timing.
     leftDuration = pulseIn(leftEcho, HIGH);
   
+      //distance is calculated with a special formula dervied from the speed of sound
     leftDistance = (leftDuration/2) / 29.1; 
 
 }
