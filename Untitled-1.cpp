@@ -69,7 +69,6 @@ void loop()
   //check if job is finished/is out of range
   if(distancefromborder>=334) ShutDown();
   //helps to not get machine stuck doing turns
-  if(resets>15) ShutDown();
 
   //check so that it doesn't run when it shouldn't
   if(isRunning)
@@ -88,7 +87,6 @@ void loop()
         distancefromborder+=20;
         //initial value has to be 1 bigger as there is one less turn in the initial run
         turns=-1;
-        resets++;
       }
       //checks if there are no obstacles in front of the machine
       //second part makes sure the machine doesn't stray too far away from the wall
