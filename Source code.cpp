@@ -33,7 +33,6 @@ unsigned short leftDistance;
 unsigned int distancefromborder = 30;
 int turns = 0;
 int resets = 0;
-bool isSetUp = false;
 bool isRunning = true;
 
 
@@ -104,7 +103,7 @@ void loop()
         delay(500);
       }
   }
-  else //if no longer moving the machine should stop doing things
+  else //if no longer running the machine should stop doing things
   {
     StopMoving();
   }
@@ -114,7 +113,7 @@ void ShutDown()
 {
 //shuts down the entire machine
   isRunning=false;
-  distancefromborder = 20;
+  distancefromborder = 30;
   resets=0;
   turns=0;
   StopMoving();
