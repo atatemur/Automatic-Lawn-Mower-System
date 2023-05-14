@@ -89,7 +89,7 @@ void loop()
       }
       //checks if there are no obstacles in front of the machine
       //second part makes sure the machine doesn't stray too far away from the wall
-      if(frontDistance > distancefromborder && leftDistance <= distancefromborder)
+      if((frontDistance > distancefromborder || frontDistance==0) && leftDistance <= distancefromborder)
       {
       //if both checks are passed then the machine should begin moving
         BeginMowing();
